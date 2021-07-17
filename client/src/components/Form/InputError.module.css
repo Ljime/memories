@@ -1,0 +1,35 @@
+.error {
+    font-size: 2rem;
+    color:red;
+    transition: all .2s;
+    margin-top: -0.5rem;
+    animation: fadeInTop .2s;
+}
+
+.exiting {
+    animation: fadeOutBottom .2s;
+}
+
+@keyframes fadeInTop {
+    0% {
+        margin-top: -3rem;
+        opacity: 0;
+    }
+
+    100% {
+        margin-top: 0;
+        opacity: 1;
+    }
+}
+
+@keyframes fadeOutBottom {
+    0% {
+        margin-top: 0;
+        opacity: 1;
+    }
+
+    100% {
+        margin-top: -2rem;
+        opacity: 0;
+    }
+}

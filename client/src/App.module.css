@@ -1,0 +1,79 @@
+.header {
+    width: 100%;
+    height: 6vh;
+    border-bottom: 1px solid grey;
+    background-color: whitesmoke;
+    font-size: 3rem;
+    font-weight: 600;
+    
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.flex {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.header h1 {
+    text-align: center;
+    font-size: 4rem;
+
+    background-clip: text;
+    background-image: linear-gradient(to right, var(--color-secondary-3), var(--color-primary-2));
+    background-size: 1000%;
+    -webkit-text-fill-color: transparent;
+    transition: all .2s;
+    animation: colorFlow 2.5s linear infinite;
+}
+
+.header a {
+    position: relative;
+    color: var(--color-primary-3);
+    margin: 0 2rem;
+    padding-bottom: 0.3rem;
+    text-decoration: none;
+    transition: all .2s;
+}
+
+.header a::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+
+    height: 0.25rem;
+    border-radius: 1rem;
+    width: 0%;
+    background-color: var(--color-primary-3);
+    transition: all .2s;
+}
+
+.header a:hover::after {
+    width: 100%;
+    right: 0;
+}
+
+.active {
+    color: var(--color-secondary-3) !important;
+    transform: translateY(0.2rem);
+}
+
+.active::after {
+    background-color: var(--color-secondary-3) !important;
+}
+
+@keyframes colorFlow {
+    0% {
+        background-position: 0% 100%;
+    }
+    50% {
+        background-position: 100% 0%;
+    }
+    100% {
+        background-position: 0% 100%;
+    }
+}

@@ -1,0 +1,10 @@
+.headingThree {
+    color: var(--color-tertiary-3);
+    opacity: 0.6;
+    font-size: 3rem;
+    font-weight: 600;
+    font-family: sans-serif;
+    padding: 1rem;
+    text-shadow: 0.5rem 0.1rem 0.5rem rgba(0, 0, 0, 0.1);
+    text-align: center;
+}

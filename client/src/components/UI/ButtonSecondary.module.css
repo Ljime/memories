@@ -1,0 +1,26 @@
+.button {
+    font-size: 2rem;
+    font-weight: 300;
+    width: 15rem;
+    height: 6rem;
+    border-radius: 0.3rem;
+    border: none;
+    margin: 1rem;
+
+    border: 2px solid var(--color-tertiary);
+    color: var(--color-tertiary);
+    background-color: white;
+    transition: all .2s;
+}
+
+.button:hover {
+    transform: translateY(2px);
+    box-shadow: 1rem 1rem 1rem rgba(0, 0, 0, 0.5);
+    border: 2px solid white;
+    color: white;
+    background-color: var(--color-tertiary);
+}
+
+.button:active {
+    transform: translateY(0);
+}

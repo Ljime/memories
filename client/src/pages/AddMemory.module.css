@@ -1,0 +1,8 @@
+.submitButton {
+    margin-top: 2rem;
+    width: 100%;
+}
+
+.inputError input, .inputError textarea {
+    border: 2px solid red;
+}

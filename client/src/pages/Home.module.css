@@ -1,0 +1,49 @@
+.home {
+    width: 100%;
+    height: calc(100vh - 6vh);
+    background: url('../assets//happy-1.jpg') no-repeat center;
+    background-size: cover;
+    transition: all .2s;
+}
+
+.home:hover {
+    background-image: url('../assets//happy-2.jpg');
+}
+
+.overlay {
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.9);
+    clip-path: polygon(70% 0, 0 0, 0 100%, 50% 100%);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.info {
+    margin-top: -20vh;
+    flex: 1.5;
+    animation: fadeIn 2s linear;
+}
+
+.empty {
+    flex: 1;
+}
+
+
+.buttonContainer {
+    margin-top: 1rem;
+    display: flex;
+    justify-content: center;
+}
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}

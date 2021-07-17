@@ -1,0 +1,10 @@
+.headingTwo {
+    color: var(--color-tertiary);
+    font-size: 3.5rem;
+    font-weight: 600;
+    font-family: sans-serif;
+    letter-spacing: 0.2rem;
+    padding: 2rem;
+    text-shadow: 0.5rem 0.1rem 0.5rem rgba(0, 0, 0, 0.1);
+    text-align: center;
+}

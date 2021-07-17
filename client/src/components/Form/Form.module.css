@@ -1,0 +1,42 @@
+.form {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    
+    font-family: sans-serif;
+    padding: 1rem 1rem 2rem 1rem;
+    margin: 5rem auto;
+    width: 50rem;
+    background-color: #fff;
+    border-radius: 2rem;
+    border: 1px solid var(--color-tertiary);;
+    animation: scaleIn .5s;
+}
+
+.form div {
+    flex: 1;
+    width: 90%;
+    
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+@keyframes scaleIn {
+    0% {
+        transform: scale(0.75);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+p {
+    padding: 0.5rem;
+    text-align: center;
+    width: 90%;
+    font-size: 2rem;
+}
