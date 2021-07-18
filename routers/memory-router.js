@@ -1,5 +1,5 @@
 const express = require('express')
-const controller = require('../controllers/Memory-controllers')
+const controller = require('../controllers/memory-controllers')
 const checkAuthToken = require("../middleware/checkAuthToken")
 const router = express.Router()
 
