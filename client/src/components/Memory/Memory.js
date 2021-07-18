@@ -1,16 +1,27 @@
 import classes from './Memory.module.css'
-import axios from 'axios'
 import {Fragment, useState} from 'react'
 import Modal from '../Modal/Modal'
 import HeadingThree from "../UI/heading-3"
 import Button from "../UI/Button"
 import ButtonSecondary from "../UI/ButtonSecondary"
-
+import useAxios from '../../hooks/useAxios'
 const Memory = (props) => {
 
+    const {sendRequest} = useAxios()
     const [showModal, setShowModal] = useState(false)
+
     const deleteMemoryHandler = async () => {
-        await axios.delete('/delete-memory', {data :{id: props.id}})
+        await sendRequest({
+            method: 'DELETE',
+            url: '/delete-memory',
+            data: {
+                id: props.id
+            },
+            headers: {
+                 'Authorization' : `Bearer ${localStorage.getItem('token')}` 
+            }
+        })
+        
         props.onDeleteMemorySubmit()
     }
 

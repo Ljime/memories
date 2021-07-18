@@ -4,7 +4,7 @@ import Input from '../components/Form/Input'
 import TextArea from '../components/Form/TextArea'
 import Button from '../components/UI/Button'
 import Spinner from '../components/UI/Spinner'
-import useAxiosPost from '../hooks/useAxiosPost'
+import useAxios from '../hooks/useAxios'
 import classes from './AddMemory.module.css'
 import useInputValidation from '../hooks/useInputValidation'
 import FormError from '../components/Form/FormError'
@@ -15,7 +15,7 @@ const AddMemory = () => {
     const {isValid: titleIsValid,  validateInput: validateTitle} = useInputValidation((value) => value.length > 0)
     const {isValid: imageIsValid,  validateInput: validateImage} = useInputValidation((value) => value.length > 0)
     const {isValid: descIsValid,  validateInput: validateDesc} = useInputValidation((value) => value.length > 0)
-    const {error, isLoading, sendRequest, finishedLoading} = useAxiosPost()
+    const {error, isLoading, sendRequest, finishedLoading} = useAxios()
     const titleRef = useRef()
     const imageRef = useRef()
     const descRef = useRef()
@@ -26,12 +26,20 @@ const AddMemory = () => {
         const title = titleRef.current.value
         const imageURL = imageRef.current.value
         const desc = descRef.current.value
-
-        sendRequest('/add-memory', {
-            title: title,
-            imageURL: imageURL,
-            description: desc
+        
+        await sendRequest({
+            method: "POST",
+            url: "/add-memory",
+            data: {
+                title,
+                imageURL,
+                description: desc,
+             },
+             headers: {
+                 'Authorization' : `Bearer ${localStorage.getItem('token')}` 
+             }
         })
+
         titleRef.current.value = ''
         imageRef.current.value = ''
         descRef.current.value = '' 
@@ -95,7 +103,7 @@ const AddMemory = () => {
                     finishedLoading={finishedLoading}
                     error={error}
                     successMessage="Successfully Added Memory"
-                    errorMessage="Please Make Sure All Forms Are Filled"
+                    errorMessage='Unable to add Memory'
                 ></FormError>
             </Form>
         </Fragment>

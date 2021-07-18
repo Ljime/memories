@@ -19,6 +19,18 @@ exports.loginUser = async (req, res) => {
     }
 }
 
+exports.logoutUser = async (req, res) => {
+    try {
+        req.user.tokens = req.user.tokens.filter(token => {
+            return token.token !== req.token
+        })
+        req.user.save()
+        res.status(200).send('OK')
+    } catch (err) {
+        console.log(err)
+        res.status(400).send(err)
+    }
+}
 
 exports.signUpUser = async (req, res) => {
 
@@ -40,6 +52,7 @@ exports.signUpUser = async (req, res) => {
 
 }
 
+// Should already have user after auth TODO
 exports.deleteUser = async (req, res) => {
 
     try {

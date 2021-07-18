@@ -2,7 +2,7 @@ import Form from "../components/Form/Form"
 import Input from "../components/Form/Input"
 import classes from "./Login.module.css"
 import Button from "../components/UI/Button"
-import useAxiosPost from "../hooks/useAxiosPost"
+import useAxios from "../hooks/useAxios"
 import { useRef, useCallback } from "react"
 import validator from "validator"
 import useInputValidation from "../hooks/useInputValidation"
@@ -17,7 +17,7 @@ const Login = () => {
 
     const {isValid: emailIsValid,  validateInput: validateEmail} = useInputValidation((value) => validator.isEmail(value))
     const {isValid: passwordIsValid,  validateInput: validatePassword} = useInputValidation((value) => value.length > 5)
-	const {error, isLoading, finishedLoading, sendRequest} = useAxiosPost()
+	const {error, isLoading, finishedLoading, sendRequest} = useAxios()
     const emailRef = useRef()
 	const passwordRef = useRef()
 
@@ -29,10 +29,14 @@ const Login = () => {
 		const email = emailRef.current.value
 		const password = passwordRef.current.value
 
-		const response = await sendRequest('/user-login', {email, password})
+		const response = await sendRequest({
+			method: "POST",
+			url: "/user-login",
+			data: { email, password },
+		})
 
 		if(response) {
-			dispatch(authActions.login())
+			dispatch(authActions.login(response.data.token))
 			history.push('/memories')
 		}
 

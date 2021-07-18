@@ -31,6 +31,12 @@ const userSchema = mongoose.Schema({
     }]
 })
 
+userSchema.virtual('memories', {
+    ref: 'Memory',
+    localField: '_id',
+    foreignField: 'userID'
+})
+
 userSchema.statics.findByCredentials = async (userEmail, userPassword) => {
     const user = await User.findOne({email: userEmail})
 
@@ -48,7 +54,7 @@ userSchema.statics.findByCredentials = async (userEmail, userPassword) => {
 }
 
 userSchema.methods.generateToken = async function() {
-    const token = jwt.sign({ _id: this._id.toString() }, 'password')
+    const token = jwt.sign({ _id: this._id.toString() }, 'secret')
     this.tokens.push({token})
     await this.save()
     return token

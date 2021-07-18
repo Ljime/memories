@@ -11,7 +11,7 @@ import Modal from "./components/Modal/Modal"
 import Button from "./components/UI/Button"
 import ButtonSecondary from "./components/UI/ButtonSecondary"
 import HeadingTwo from "./components/UI/heading-2"
-import { useState } from "react"
+import { Fragment, useState } from "react"
 import { authActions } from "./store/authSlice"
 import { useDispatch } from "react-redux"
 import LoggedInRoute from './components/Routes/LoggedInRoute';
@@ -19,9 +19,11 @@ import LoggedOutRoute from './components/Routes/LoggedOutRoute';
 import { useHistory } from 'react-router-dom'
 import LoggedOutNavLink from './components/Routes/LoggedOutNavLink';
 import LoggedInNavLink from './components/Routes/LoggedInNavLink';
+import useAxios from './hooks/useAxios';
+import Spinner from './components/UI/Spinner';
 
 function App() {
-
+	const {sendRequest, isLoading} = useAxios()
 	const loggedIn = useSelector(state => state.auth.loggedIn)
   	const [showModal, setShowModal] = useState(false)
 	const dispatch = useDispatch()
@@ -35,10 +37,19 @@ function App() {
 		setShowModal(true)
 	}
 
-	const logoutHandler = () => {
+	const logoutHandler = async () => {
 		setShowModal(false)
+		console.log('hi')
+		await sendRequest({
+			url: "/user-logout",
+			method: "POST",
+			headers: {
+				'Authorization': `Bearer ${localStorage.getItem("token")}`,
+			}
+		})
 		dispatch(authActions.logout())
 		history.push('/')
+		history.go(0)
 	}
 
  	 return (
@@ -58,7 +69,7 @@ function App() {
 					</Link>
 				</div>
 				<div className={classes.flex}>
-					{loggedIn && <a onClick={showLogoutModal}>Logout</a>}
+					{loggedIn && <Button onClick={showLogoutModal}>Logout</Button>}
 					<LoggedOutNavLink to="/login" activeClassName={classes.active}>
 						Login
 					</LoggedOutNavLink>
@@ -90,11 +101,17 @@ function App() {
 			</Switch>
 
 			<Modal in={showModal}>
-				<HeadingTwo>Are You Sure You Want To Log Out?</HeadingTwo>
-				<div>
-					<ButtonSecondary onClick={hideLogoutModal}>No</ButtonSecondary>
-					<Button onClick={logoutHandler}>Yes</Button>
-				</div>
+				{isLoading && <Spinner></Spinner>}
+				{!isLoading && 
+					<Fragment>
+						<HeadingTwo>Are You Sure You Want To Log Out?</HeadingTwo>
+						<div>
+							<ButtonSecondary onClick={hideLogoutModal}>No</ButtonSecondary>
+							<Button onClick={logoutHandler}>Yes</Button>
+						</div>
+					</Fragment>
+				}
+				
 			</Modal>
 		</div>
 	)

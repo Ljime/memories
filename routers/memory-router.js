@@ -5,11 +5,11 @@ const router = express.Router()
 
 router.post('/add-memory', checkAuthToken, controller.addMemory)
 
-router.get('/memories', controller.getMemories)
+router.get('/memories', checkAuthToken, controller.getMemories)
 
-router.put('/update-memory', controller.updateMemory)
+router.put('/update-memory', checkAuthToken, controller.updateMemory)
 
-router.delete('/delete-memory', controller.deleteMemory)
+router.delete('/delete-memory', checkAuthToken, controller.deleteMemory)
 
 module.exports = router
 

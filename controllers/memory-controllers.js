@@ -7,7 +7,8 @@ exports.addMemory = async (req, res) => {
         const memory = new Memory({
             title: req.body.title,
             description: req.body.description,
-            imageURL: req.body.imageURL
+            imageURL: req.body.imageURL,
+            userID: req.user._id
         })
         await memory.save()
         res.status(200).send('OK')
@@ -21,7 +22,10 @@ exports.addMemory = async (req, res) => {
 exports.getMemories = async (req, res) => {
 
     try {
-        const memories = await Memory.find()
+       // const memories = await req.user.populate('memories').execPopulate()
+        const memories = await Memory.find({userID: req.user._id})
+        console.log(req.user)
+        console.log(memories)
         res.status(200).json(memories)
 
     } catch (err) {

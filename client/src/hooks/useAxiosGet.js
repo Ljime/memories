@@ -10,9 +10,11 @@ const useAxiosGet = () => {
         setFinishedLoading(false)
         setError(null)
         setIsLoading(true)
+        
         const data = await axios.get(url).catch(err => {
             setError('Error')
         })
+
         setIsLoading(false)
         setFinishedLoading(true)
         return data

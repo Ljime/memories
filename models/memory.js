@@ -3,7 +3,7 @@ const mongoose = require('mongoose')
 const memorySchema = mongoose.Schema({
     title: {
         type: String,
-        required: true
+        required: true,
     },
     description: {
         type: String,
@@ -12,6 +12,11 @@ const memorySchema = mongoose.Schema({
     imageURL: {
         type: String,
         required: true
+    },
+    userID: {
+        type: mongoose.SchemaTypes.ObjectId,
+        required: true,
+        ref: 'User'
     }
 })
 

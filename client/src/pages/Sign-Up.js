@@ -2,23 +2,28 @@ import Form from '../components/Form/Form'
 import Input from '../components/Form/Input'
 import classes from './Sign-Up.module.css'
 import Button from '../components/UI/Button'
-import useAxiosPost from '../hooks/useAxiosPost'
+import useAxios from '../hooks/useAxios'
 import { useRef, useCallback } from 'react'
 import validator from 'validator'
 import useInputValidation from '../hooks/useInputValidation'
 import FormError from '../components/Form/FormError'
 import InputError from '../components/Form/InputError'
 import Spinner from '../components/UI/Spinner'
+import { useHistory } from 'react-router'
+import { useDispatch } from 'react-redux'
+import { authActions } from '../store/authSlice'
 
 const SignUp = () => {
 
     const {isValid: emailIsValid,  validateInput: validateEmail} = useInputValidation((value) => validator.isEmail(value))
     const {isValid: usernameIsValid,  validateInput: validateUsername} = useInputValidation((value) => value.length > 0)
     const {isValid: passwordIsValid,  validateInput: validatePassword} = useInputValidation((value) => value.length > 5)
-    const {error, isLoading, sendRequest, finishedLoading} = useAxiosPost()
+    const {error, isLoading, sendRequest, finishedLoading} = useAxios()
     const usernameRef = useRef()
     const emailRef = useRef()
     const passwordRef = useRef()
+	const dispatch = useDispatch()
+	const history = useHistory()
 
     const onSubmitHandler = useCallback ( async (event) => {
         event.preventDefault()
@@ -26,16 +31,21 @@ const SignUp = () => {
         const email = emailRef.current.value
         const password = passwordRef.current.value
 
-        await sendRequest('/create-user', {
-            username,
-            email,
-            password
-        })
+        const response = await sendRequest({
+			method: "POST",
+			url: "/create-user",
+			data: { username, email, password }
+		})
 
-        usernameRef.current.value = ''
-        emailRef.current.value = ''
-        passwordRef.current.value = ''
-    }, [sendRequest])
+		if (response) {
+			usernameRef.current.value = ''
+			emailRef.current.value = ''
+			passwordRef.current.value = ''
+			dispatch(authActions.login(response.data.token))
+			history.push("/memories")
+		}
+
+    }, [sendRequest, history, dispatch])
     
     const onUsernameBlurHandler = () => {
         validateUsername(usernameRef.current.value)
