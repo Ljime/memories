@@ -12,9 +12,10 @@ import Spinner from "../components/UI/Spinner"
 import { useDispatch } from "react-redux"
 import { authActions } from "../store/authSlice"
 import { useHistory } from "react-router-dom"
-
+import FormRedirect from "../components/Form/FormRedirect"
+import useExpireToken from "../hooks/useExpireToken"
 const Login = () => {
-
+	const expireToken = useExpireToken()
     const {isValid: emailIsValid,  validateInput: validateEmail} = useInputValidation((value) => validator.isEmail(value))
     const {isValid: passwordIsValid,  validateInput: validatePassword} = useInputValidation((value) => value.length > 5)
 	const {error, isLoading, finishedLoading, sendRequest} = useAxios()
@@ -37,10 +38,11 @@ const Login = () => {
 
 		if(response) {
 			dispatch(authActions.login(response.data.token))
+			expireToken(response.data.token)
 			history.push('/memories')
 		}
 
-	}, [sendRequest, dispatch, history])
+	}, [sendRequest, dispatch, history, expireToken])
 
 	const onEmailBlurHandler = () => {
 		validateEmail(emailRef.current.value)
@@ -74,6 +76,7 @@ const Login = () => {
 				errorMessage="Passwords Should Be More Than 6 Characters"
 			></InputError>
 			<div className={classes.buttonContainer}>
+				<FormRedirect to='/signup'>Sign Up?</FormRedirect>
 				{isLoading ? (
 					<span>
 						<Spinner></Spinner>

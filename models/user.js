@@ -5,13 +5,13 @@ const jwt = require('jsonwebtoken')
 const userSchema = mongoose.Schema({
     username: {
         type: String,
-        required: true,
+        required: [true, 'No Username Provided'],
         unqiue: true
     },
     email: {
         type: String,
         trim: true,
-        required: true,
+        required: [true, 'No Email Provided'],
         unqiue: true,
         validate(value) {
             if(!validator.isEmail(value)) {
@@ -21,7 +21,8 @@ const userSchema = mongoose.Schema({
     },
     password: {
         type: String,
-        required: true
+        min: 6,
+        required: [true, 'No Password Provided']
     },
     tokens: [{
         token: {
@@ -54,7 +55,7 @@ userSchema.statics.findByCredentials = async (userEmail, userPassword) => {
 }
 
 userSchema.methods.generateToken = async function() {
-    const token = jwt.sign({ _id: this._id.toString() }, 'secret')
+    const token = jwt.sign({ _id: this._id.toString() }, 'secret', {expiresIn: '3600000'})
     this.tokens.push({token})
     await this.save()
     return token
@@ -64,23 +65,26 @@ userSchema.methods.hashPassword = async function () {
     this.password = await bcrypt.hash(this.password, 8) 
 }
 
-userSchema.pre('save', async function (next) {
-
+userSchema.methods.checkDupeCredentials = async function () {
     // Check If Email or Username already exists unqiue not working atm
-    // const usernameExists = await User.findOne({username: this.username})
-    // if (usernameExists) {
-    //     throw new Error('User already exists!')
-    // }
+    const usernameExists = await User.findOne({username: this.username})
+    if (usernameExists) {
+        throw new Error('Username already exists!')
+    }
     
-    // const emailExists = await User.findOne({email: this.email})
-    // if (emailExists) {
-    //     throw new Error('User already exists!')
-    // }
+    const emailExists = await User.findOne({email: this.email})
+    if (emailExists) {
+        throw new Error('Email already exists!')
+    }
+}
 
-    // Hash password
-    next()
-})
+// userSchema.pre('save', async function (next) {
+
+
+//     next()
+// })
 
 const User = mongoose.model('User', userSchema)
 
 module.exports = User
+

@@ -15,7 +15,7 @@ const checkAuthToken = async (req, res, next) => {
         req.user = user
         next()
     } catch (e) {
-        res.status(401).send('Please Authenticate')
+        res.status(401).json({error: 'Please Authenticate'})
     }
 }
 

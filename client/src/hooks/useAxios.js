@@ -15,10 +15,11 @@ const useAxios = () => {
             method: data.method,
             url: data.url,
             headers: data.headers,
-            data: data.data
+            data: data.data,
         }).catch((err) => {
-			setError('Error')
+			setError(err.response.data.error || 'Unable to sign up user')
 		})
+
 		setFinishedLoading(true)
 		setIsLoading(false)
 		return response
@@ -33,5 +34,7 @@ const useAxios = () => {
 }
 
 export default useAxios
+
+
 
 

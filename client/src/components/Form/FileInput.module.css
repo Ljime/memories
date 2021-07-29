@@ -1,0 +1,15 @@
+.input label {
+    font-size: 2.5rem;
+    margin: 1rem;
+    color: var(--color-tertiary);
+    font-weight: 500;
+}
+
+.input input {
+    font-family: inherit;
+    height: 5rem;
+    font-size: 2rem;
+    color: var(--color-tertiary);
+    transition: all .2s;
+}
+

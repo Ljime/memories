@@ -19,6 +19,26 @@ exports.loginUser = async (req, res) => {
     }
 }
 
+exports.signUpUser = async (req, res) => {
+    
+    try {
+        const user = new User({
+            username: req.body.username,
+            email: req.body.email,
+            password: req.body.password
+        })
+        await user.hashPassword()
+        await user.checkDupeCredentials()
+        await user.save()
+        const token = await user.generateToken()
+        res.status(200).send({user, token})
+        
+    } catch (err) {
+        console.log(err)
+        res.status(400).json({error: err.toString()})
+    }
+}
+
 exports.logoutUser = async (req, res) => {
     try {
         req.user.tokens = req.user.tokens.filter(token => {
@@ -30,26 +50,6 @@ exports.logoutUser = async (req, res) => {
         console.log(err)
         res.status(400).send(err)
     }
-}
-
-exports.signUpUser = async (req, res) => {
-
-    try {
-        const user = new User({
-            username: req.body.username,
-            email: req.body.email,
-            password: req.body.password
-        })
-        await user.hashPassword()
-        await user.save()
-        const token = await user.generateToken()
-        res.status(200).send({user, token})
-
-    } catch (err) {
-        console.log(err)
-        res.status(400).send(err)
-    }
-
 }
 
 // Should already have user after auth TODO
@@ -64,5 +64,7 @@ exports.deleteUser = async (req, res) => {
         res.status(400).send(err)
     }
 }
+
+
 
 

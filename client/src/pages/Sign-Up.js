@@ -12,9 +12,11 @@ import Spinner from '../components/UI/Spinner'
 import { useHistory } from 'react-router'
 import { useDispatch } from 'react-redux'
 import { authActions } from '../store/authSlice'
+import FormRedirect from '../components/Form/FormRedirect'
+import useExpireToken from '../hooks/useExpireToken'
 
 const SignUp = () => {
-
+	const expireToken = useExpireToken()
     const {isValid: emailIsValid,  validateInput: validateEmail} = useInputValidation((value) => validator.isEmail(value))
     const {isValid: usernameIsValid,  validateInput: validateUsername} = useInputValidation((value) => value.length > 0)
     const {isValid: passwordIsValid,  validateInput: validatePassword} = useInputValidation((value) => value.length > 5)
@@ -42,10 +44,11 @@ const SignUp = () => {
 			emailRef.current.value = ''
 			passwordRef.current.value = ''
 			dispatch(authActions.login(response.data.token))
+			expireToken(response.data.token)
 			history.push("/memories")
 		}
 
-    }, [sendRequest, history, dispatch])
+    }, [sendRequest, history, dispatch, expireToken])
     
     const onUsernameBlurHandler = () => {
         validateUsername(usernameRef.current.value)
@@ -60,57 +63,56 @@ const SignUp = () => {
 	}
 
     return (
-					<Form onSubmit={onSubmitHandler}>
-						<Input
-							onBlur={onUsernameBlurHandler}
-							className={!usernameIsValid ? classes.inputError : ""}
-							ref={usernameRef}
-							name="Username"
-						></Input>
-						<InputError
-							error={!usernameIsValid}
-							errorMessage="Username is Blank"
-						></InputError>
-						<Input
-							onBlur={onEmailBlurHandler}
-							className={!emailIsValid ? classes.inputError : ""}
-							ref={emailRef}
-							name="Email"
-						></Input>
-						<InputError
-							error={!emailIsValid}
-							errorMessage="Email is Invalid"
-						></InputError>
-						<Input
-							onBlur={onPasswordBlurHandler}
-							className={!passwordIsValid ? classes.inputError : ""}
-							ref={passwordRef}
-							name="Password"
-							type="password"
-						></Input>
-						<InputError
-							error={!passwordIsValid}
-							errorMessage="Password Must Be 6 Characters Long"
-						></InputError>
-						<div className={classes.buttonContainer}>
-							{isLoading ? (
-								<span>
-									<Spinner></Spinner>
-								</span>
-							) : (
-								<Button className={classes.submitButton}>Sign Up</Button>
-							)}
-						</div>
-						<FormError
-							finishedLoading={finishedLoading}
-							error={error}
-							successMessage="Successfully Signed Up!"
-							errorMessage="Unable To Sign Up! Please Check Your Credentials"
-						></FormError>
-					</Form>
-				)
+		<Form onSubmit={onSubmitHandler}>
+			<Input
+				onBlur={onUsernameBlurHandler}
+				className={!usernameIsValid ? classes.inputError : ""}
+				ref={usernameRef}
+				name="Username"
+			></Input>
+			<InputError
+				error={!usernameIsValid}
+				errorMessage="Username is Blank"
+			></InputError>
+			<Input
+				onBlur={onEmailBlurHandler}
+				className={!emailIsValid ? classes.inputError : ""}
+				ref={emailRef}
+				name="Email"
+			></Input>
+			<InputError
+				error={!emailIsValid}
+				errorMessage="Email is Invalid"
+			></InputError>
+			<Input
+				onBlur={onPasswordBlurHandler}
+				className={!passwordIsValid ? classes.inputError : ""}
+				ref={passwordRef}
+				name="Password"
+				type="password"
+			></Input>
+			<InputError
+				error={!passwordIsValid}
+				errorMessage="Password Must Be 6 Characters Long"
+			></InputError>
+			<div className={classes.buttonContainer}>
+				<FormRedirect to='/login'>Login?</FormRedirect>
+				{isLoading ? (
+					<span>
+						<Spinner></Spinner>
+					</span>
+				) : (
+					<Button className={classes.submitButton}>Sign Up</Button>
+				)}
+			</div>
+			<FormError
+				finishedLoading={finishedLoading}
+				error={error}
+				successMessage="Successfully Signed Up!"
+				errorMessage={error || "Unable To Sign Up! Please Check Your Credentials"}
+			></FormError>
+		</Form>
+	)
 }
 
 export default SignUp
-
-

@@ -34,45 +34,49 @@ const Memory = (props) => {
     }
 
     return (
-            <Fragment>
-                <div className={classes.card}>
-                    <div className={classes.imageContainer}>
-                        <div className={classes.titleContainer}>
-                            <h4>{props.title}</h4>
-                            <div className={classes.menuContainer}>
-                                <div className={classes.menu}></div>
-                                <ul className={classes.menuDropDown}>
-                                    <li className={classes.menuDropDownItem}>Update Memory</li>
-                                    <li
-                                        onClick={showDeleteMemoryModal}
-                                        className={classes.menuDropDownItem}
-                                    >
-                                        Delete Memory
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                        <img className={classes.image} src={props.imageURL} alt="Memory"></img>
-                    </div>
-                    <div className={classes.text}>
+        <Fragment>
+            <div className={classes.card}>
+                <div className={classes.imageContainer}>
+                    <div className={classes.titleContainer}>
                         <h4>{props.title}</h4>
-                        <p>{props.description}</p>
+                        <div className={classes.menuContainer}>
+                            <div className={classes.menu}></div>
+                            <ul className={classes.menuDropDown}>
+                                <li className={classes.menuDropDownItem}>Update Memory</li>
+                                <li
+                                    onClick={showDeleteMemoryModal}
+                                    className={classes.menuDropDownItem}
+                                >
+                                    Delete Memory
+                                </li>
+                            </ul>
+                        </div>
                     </div>
+                    <img
+                        className={classes.image}
+                        src={`/memories/${props.id}/image`}
+                        alt="Memory"
+                    ></img>
                 </div>
-                <Modal in={showModal}>
-                    <HeadingThree>
-                        Are You Sure You Want To Delete This Memory?
-                    </HeadingThree>
-                    <div>
-                        <ButtonSecondary onClick={hideMemoryModal}>No</ButtonSecondary>
-                        <Button onClick={deleteMemoryHandler}>Yes</Button>
-                    </div>
-                </Modal>
-            </Fragment>
-        )
+                <div className={classes.text}>
+                    <h4>{props.title}</h4>
+                    <p>{props.description}</p>
+                </div>
+            </div>
+            <Modal in={showModal}>
+                <HeadingThree>Are You Sure You Want To Delete This Memory?</HeadingThree>
+                <div>
+                    <ButtonSecondary onClick={hideMemoryModal}>No</ButtonSecondary>
+                    <Button onClick={deleteMemoryHandler}>Yes</Button>
+                </div>
+            </Modal>
+        </Fragment>
+    )
 }
 
 export default Memory
+
+
 
 
 

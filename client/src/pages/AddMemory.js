@@ -1,4 +1,4 @@
-import { useRef, Fragment } from 'react'
+import { useRef, Fragment, useState } from 'react'
 import Form from '../components/Form/Form'
 import Input from '../components/Form/Input'
 import TextArea from '../components/Form/TextArea'
@@ -9,6 +9,7 @@ import classes from './AddMemory.module.css'
 import useInputValidation from '../hooks/useInputValidation'
 import FormError from '../components/Form/FormError'
 import InputError from '../components/Form/InputError'
+import FileInput from '../components/Form/FileInput'
 
 const AddMemory = () => {
     
@@ -19,29 +20,37 @@ const AddMemory = () => {
     const titleRef = useRef()
     const imageRef = useRef()
     const descRef = useRef()
+    const [image, setImage] = useState(null)
+    const imageHandler=(e) => {
+        setImage(e.target.files[0])
+    }
 
     const addMemoryHandler = async (e) => {
         e.preventDefault()
-
         const title = titleRef.current.value
-        const imageURL = imageRef.current.value
         const desc = descRef.current.value
+
+        const fd = new FormData()
+        fd.append('image', image)
+        fd.append('title', title)
+        fd.append('description', desc)
         
         await sendRequest({
             method: "POST",
             url: "/add-memory",
-            data: {
-                title,
-                imageURL,
-                description: desc,
-             },
+            data: fd,
+            // data: {
+            //     title,
+            //     image,
+            //     description: desc,
+            //  },
              headers: {
-                 'Authorization' : `Bearer ${localStorage.getItem('token')}` 
+                 'Authorization' : `Bearer ${localStorage.getItem('token')}`
              }
         })
+        console.log(image)
 
         titleRef.current.value = ''
-        imageRef.current.value = ''
         descRef.current.value = '' 
     }
 
@@ -70,12 +79,20 @@ const AddMemory = () => {
                     error={!titleIsValid}
                     errorMessage="Title is Empty"
                 ></InputError>
-                <Input
+                <FileInput
+                    className={!imageIsValid ? classes.inputError : ""}
+                    onBlur={onImageBlurHandler}
+                    onChange={imageHandler}
+                    ref={imageRef}
+                    name="Image"
+                >
+                </FileInput>
+                {/* <Input
                     className={!imageIsValid ? classes.inputError : ""}
                     onBlur={onImageBlurHandler}
                     ref={imageRef}
                     name="ImageURL"
-                ></Input>
+                ></Input> */}
                 <InputError
                     error={!imageIsValid}
                     errorMessage="ImageURL is Empty"
@@ -118,4 +135,5 @@ export default AddMemory
 {error && (
     <p className={classes.error}>Please Make Sure All Forms Are Filled</p>
 )} */
+
 

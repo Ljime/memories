@@ -9,8 +9,8 @@ const memorySchema = mongoose.Schema({
         type: String,
         required: true
     },
-    imageURL: {
-        type: String,
+    image: {
+        type: Buffer,
         required: true
     },
     userID: {
@@ -23,3 +23,4 @@ const memorySchema = mongoose.Schema({
 const Memory = mongoose.model('Memory', memorySchema)
 
 module.exports = Memory
+

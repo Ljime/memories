@@ -5,11 +5,11 @@ import { useState } from 'react'
 import useAxios from '../hooks/useAxios'
 import Spinner from '../components/UI/Spinner'
 import HeadingTwo from '../components/UI/heading-2'
-
+import { useSelector } from 'react-redux'
 const Memories = () => {
     const {error, isLoading, sendRequest, finishedLoading} = useAxios()
     const [memories, setMemories] = useState([])
-
+    const loggedIn = useSelector(state => state.auth.loggedIn)
     const fetchMemories = useCallback(async () => {
         const data = await sendRequest({
             url: "/memories",
@@ -29,7 +29,7 @@ const Memories = () => {
             memories.push({
                 id: data.data[item]._id,
                 title: data.data[item].title,
-                imageURL: data.data[item].imageURL,
+                imageURL: data.data[item].image,
                 description: data.data[item].description
             })
         }
@@ -51,11 +51,13 @@ const Memories = () => {
         <section className={classes.home}>
             {isLoading && <Spinner></Spinner>}
             {memories.map(item => <Memory onDeleteMemorySubmit={onDeleteMemorySubmit} id={item.id} key={item.id} title={item.title} imageURL={item.imageURL} description={item.description}></Memory>)}
-            {(error || (memories.length===0 && finishedLoading)) && <HeadingTwo>Unable to load memories</HeadingTwo>}
+            {(loggedIn && memories.length===0 && finishedLoading) && <HeadingTwo>Unable to load memories</HeadingTwo>}
+            {!loggedIn && <HeadingTwo>{error}</HeadingTwo>}
         </section>
     )
 }
 
 
 export default Memories
+
 
