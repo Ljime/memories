@@ -11,7 +11,7 @@ import FormError from '../components/Form/FormError'
 import InputError from '../components/Form/InputError'
 import FileInput from '../components/Form/FileInput'
 
-const AddMemory = () => {
+const AddMemory = (props) => {
     
     const {isValid: titleIsValid,  validateInput: validateTitle} = useInputValidation((value) => value.length > 0)
     const {isValid: imageIsValid,  validateInput: validateImage} = useInputValidation((value) => value.length > 0)
@@ -21,6 +21,7 @@ const AddMemory = () => {
     const imageRef = useRef()
     const descRef = useRef()
     const [image, setImage] = useState(null)
+
     const imageHandler=(e) => {
         setImage(e.target.files[0])
     }
@@ -39,17 +40,11 @@ const AddMemory = () => {
             method: "POST",
             url: "/add-memory",
             data: fd,
-            // data: {
-            //     title,
-            //     image,
-            //     description: desc,
-            //  },
              headers: {
                  'Authorization' : `Bearer ${localStorage.getItem('token')}`
              }
         })
-        console.log(image)
-
+        
         titleRef.current.value = ''
         descRef.current.value = '' 
     }
@@ -68,7 +63,7 @@ const AddMemory = () => {
 
     return (
         <Fragment>
-            <Form onSubmit={addMemoryHandler}>
+            <Form className={props.className} onSubmit={addMemoryHandler}>
                 <Input
                     className={!titleIsValid ? classes.inputError : ""}
                     onBlur={onTitleBlurHandler}

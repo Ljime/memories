@@ -39,7 +39,6 @@ function App() {
 
 	const logoutHandler = async () => {
 		setShowModal(false)
-		console.log('hi')
 		await sendRequest({
 			url: "/user-logout",
 			method: "POST",

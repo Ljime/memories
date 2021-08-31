@@ -51,15 +51,28 @@ exports.getMemoryImage = async (req, res) => {
 
 // UPDATE
 exports.updateMemory = async (req, res) => {
-
     try {
-        await Memory.findByIdAndUpdate(
-             req.body.id,
-             req.body.updatedMemory)
+
+        
+        let updatedData = {}
+        if(req.body.title) {
+            updatedData = {title: req.body.title}
+        }
+        
+        if(req.file) {
+            updatedData = {...updatedData, image: req.file.buffer}
+        }
+        
+        if(req.body.description) {
+            updatedData = {...updatedData, description: req.body.description}
+        }
+
+        await Memory.findByIdAndUpdate(req.body.id, updatedData)
         res.status(200).json('OK')
 
     } catch (err) {
         res.status(400).send(err)
+        console.log(err)
     }
 
 }

@@ -1,6 +1,6 @@
 .header {
     width: 100%;
-    height: 6vh;
+    min-height: 6vh;
     border-bottom: 1px solid grey;
     background-color: whitesmoke;
     font-size: 3rem;

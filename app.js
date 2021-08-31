@@ -22,9 +22,9 @@ const fileStorage = multer.memoryStorage({
     }
 })
 
-app.use(express.urlencoded({extended: false}))
-app.use(multer({storage: fileStorage}).single('image'))
 app.use(express.json())
+app.use(express.urlencoded({extended: true}))
+app.use(multer({storage: fileStorage}).single('image'))
 
 app.use(storyRouter)
 app.use(userRouter)

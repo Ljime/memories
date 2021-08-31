@@ -1,7 +1,7 @@
 .modal {
     position: absolute;
     z-index: 5;
-    top: 30vh;
+    top: 20vh;
     left: 50%;
     transform: translateX(-50%);
 
@@ -12,7 +12,7 @@
 
     border-radius: 1.5rem;
     padding: 2rem;
-    width: 50rem;
+    min-width: 50rem;
     background-color:var(--color-primary-2);
     animation: fadeInTop .3s;
 }
