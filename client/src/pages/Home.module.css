@@ -47,3 +47,13 @@
         opacity: 1;
     }
 }
+
+@media (max-width: 425px) {
+    .overlay {
+        clip-path: none;
+    }
+
+    .empty {
+        flex: 0;
+    }
+}

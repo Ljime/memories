@@ -13,10 +13,10 @@ const Home = () => {
                     <HeadingThree>The Best Memories Kept Safe Here</HeadingThree>
                     <div className={classes.buttonContainer}>
                         <Link to='/login'>
-                            <Button>Get Started</Button>
+                            <Button>Log In</Button>
                         </Link>
-                        <Link to='/add-memory'>
-                            <ButtonSecondary>Create A Memory</ButtonSecondary>
+                        <Link to='/signup'>
+                            <ButtonSecondary>Sign Up</ButtonSecondary>
                         </Link>
                     </div>
                 </div>

@@ -8,6 +8,7 @@
 .input input {
     font-family: inherit;
     height: 5rem;
+    width: 100%;
     font-size: 2rem;
     color: var(--color-tertiary);
     transition: all .2s;

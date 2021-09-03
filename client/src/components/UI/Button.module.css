@@ -1,18 +1,19 @@
 .button {
     position: relative;;
-    font-size: 2rem;
+    font-size: clamp(1.6rem, 2.5vw, 2rem);
     font-weight: 300;
     width: 15rem;
     height: 6rem;
     border-radius: 0.3rem;
     border: none;
     margin: 1rem;
-
+    padding: 1rem 2rem;
     border: 2px solid white;
     color: white;
     background-color: var(--color-tertiary);
     transition: all .2s;
 }
+
 
 .button:hover {
     transform: translateY(2px);
@@ -24,4 +25,18 @@
 
 .button:active {
     transform: translateY(0);
+}
+
+@media (max-width: 768px) {
+    .button {
+        padding: 0rem;
+        width: 7.5rem;
+    }
+}
+
+@media (max-width: 350px) {
+    .button {
+        padding: 0rem;
+        width: 6rem;
+    }
 }
